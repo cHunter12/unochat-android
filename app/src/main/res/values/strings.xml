@@ -1,0 +1,17 @@
+<resources>
+
+    <string name="app_name">UnoChat</string>
+
+    <string name="app_icon">App Icon</string>
+    <string name="register">Register</string>
+    <string name="sign_in">Sign In</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="logout">Logout</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="enter_your_message">Enter your message</string>
+    <string name="message_channel_id">message_channel</string>
+    <string name="message_channel_name">Messages</string>
+    <string name="message_channel_description">New Chat Message Notifications</string>
+
+</resources>

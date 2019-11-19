@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1048650425330",
+    "firebase_url": "https://unochat-e39e7.firebaseio.com",
+    "project_id": "unochat-e39e7",
+    "storage_bucket": "unochat-e39e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048650425330:android:a295fc768f1c86f154816b",
+        "android_client_info": {
+          "package_name": "com.chunter.unochat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048650425330-qtfol9m5bgjgnj57a883jm7k6s0vevp8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwlhh0BfZN9daT14UH0QhhGJSBHdHaGgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048650425330-qtfol9m5bgjgnj57a883jm7k6s0vevp8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
