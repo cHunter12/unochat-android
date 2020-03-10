@@ -7,11 +7,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chunter.unochat.R
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
@@ -21,6 +22,8 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
 
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var messageList: RecyclerView
+    private lateinit var enterMessageLayout: TextInputLayout
+    private lateinit var enterMessage: TextInputEditText
 
     private var roomId: String = ""
 
@@ -31,8 +34,12 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
         val senderId = FirebaseAuth.getInstance().currentUser?.uid
             ?: throw IllegalStateException("User is not signed in!")
 
-        chatAdapter = ChatAdapter(senderId)
         messageList = view.findViewById(R.id.messages)
+        enterMessageLayout = view.findViewById(R.id.enterMessageLayout)
+        enterMessage = view.findViewById(R.id.enterMessage)
+
+        chatAdapter = ChatAdapter(senderId)
+
         messageList.layoutManager = LinearLayoutManager(requireContext()).apply {
             reverseLayout = true
         }
@@ -44,7 +51,14 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             val room = rooms.get()
                 .await()
                 .documents
-                .find { room -> (room["users"] as List<String>).containsAll(listOf(senderId, receiverId)) }
+                .find { room ->
+                    val usersCollection = room["users"]
+                    if (usersCollection is List<*>) {
+                        usersCollection.containsAll(listOf(senderId, receiverId))
+                    } else {
+                        false
+                    }
+                }
 
             if (room != null) {
                 roomId = room.id

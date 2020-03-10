@@ -10,9 +10,13 @@ import android.widget.Button
 import androidx.core.os.bundleOf
 import com.chunter.unochat.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_sign_in.*
+import com.google.android.material.textfield.TextInputEditText
 
 class SignInBottomSheet private constructor() : BottomSheetDialogFragment() {
+
+    private lateinit var emailInput: TextInputEditText
+    private lateinit var passwordInput: TextInputEditText
+    private lateinit var doneButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,23 +27,26 @@ class SignInBottomSheet private constructor() : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.doneButton).apply {
-            val isSignIn = requireArguments().getBoolean(SIGN_IN)
+        emailInput = view.findViewById(R.id.emailInput)
+        passwordInput = view.findViewById(R.id.passwordInput)
+        doneButton = view.findViewById(R.id.doneButton)
 
-            text = if (isSignIn) getString(R.string.sign_in) else getString(R.string.register)
-            setOnClickListener {
-                val email = emailInput.text?.toString() ?: return@setOnClickListener
-                val password = passwordInput.text?.toString() ?: return@setOnClickListener
+        val isSignIn = requireArguments().getBoolean(SIGN_IN)
+        doneButton.text =
+            if (isSignIn) getString(R.string.sign_in) else getString(R.string.register)
 
-                targetFragment?.onActivityResult(
-                    targetRequestCode,
-                    Activity.RESULT_OK,
-                    Intent().apply {
-                        putExtra(EMAIL, email)
-                        putExtra(PASSWORD, password)
-                    })
-                dismiss()
-            }
+        doneButton.setOnClickListener {
+            val email = emailInput.text?.toString() ?: return@setOnClickListener
+            val password = passwordInput.text?.toString() ?: return@setOnClickListener
+
+            targetFragment?.onActivityResult(
+                targetRequestCode,
+                Activity.RESULT_OK,
+                Intent().apply {
+                    putExtra(EMAIL, email)
+                    putExtra(PASSWORD, password)
+                })
+            dismiss()
         }
     }
 

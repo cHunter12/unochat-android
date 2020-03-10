@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chunter.unochat.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import timber.log.Timber
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -32,7 +34,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         userList.layoutManager = LinearLayoutManager(userList.context)
         userList.adapter = userAdapter
 
-        firestore.collection("users").addSnapshotListener { snapshot, _ ->
+        loadUsers()
+    }
+
+    private fun loadUsers() {
+        firestore.collection("users").addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                Timber.e(error)
+                if (error.code == FirebaseFirestoreException.Code.NOT_FOUND) {
+                    loadUsers()
+                } else {
+                    return@addSnapshotListener
+                }
+            }
+
             if (snapshot == null) return@addSnapshotListener
 
             userAdapter.submitList(snapshot.toObjects(User::class.java)

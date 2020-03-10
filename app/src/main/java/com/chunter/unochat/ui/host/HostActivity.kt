@@ -1,9 +1,9 @@
 package com.chunter.unochat.ui.host
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.chunter.unochat.R
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.iid.FirebaseInstanceId
@@ -65,6 +66,7 @@ class HostActivity : AppCompatActivity(R.layout.activity_host) {
                     }
                 }
             }
+            R.id.crash -> Crashlytics.getInstance().crash()
         }
         return super.onOptionsItemSelected(item)
     }

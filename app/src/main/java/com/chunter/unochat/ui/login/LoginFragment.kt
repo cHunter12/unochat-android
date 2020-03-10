@@ -66,7 +66,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun displaySignInBottomSheet(isSignIn: Boolean) {
         val signInSheet = SignInBottomSheet.getInstance(isSignIn)
         signInSheet.setTargetFragment(this, if (isSignIn) RC_SIGN_IN else RC_REGISTER)
-        signInSheet.show(requireFragmentManager(), null)
+        signInSheet.show(parentFragmentManager, null)
     }
 
     private fun firebaseAuthWithEmail(email: String, password: String) {
