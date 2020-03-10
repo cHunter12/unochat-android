@@ -56,6 +56,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun onUserClicked(user: User) {
-        findNavController().navigate(HomeFragmentDirections.navToChat(user.id))
+        findNavController().navigate(HomeFragmentDirections.navToChat(user.id, user.name))
     }
 }

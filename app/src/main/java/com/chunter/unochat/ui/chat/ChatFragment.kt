@@ -2,6 +2,7 @@ package com.chunter.unochat.ui.chat
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
         // TODO: Log user out, don't crash the app!
         val senderId = FirebaseAuth.getInstance().currentUser?.uid
             ?: throw IllegalStateException("User is not signed in!")
+
+        (requireActivity() as AppCompatActivity).supportActionBar?.title =
+            ChatFragmentArgs.fromBundle(requireArguments()).userName
 
         messageList = view.findViewById(R.id.messages)
         enterMessageLayout = view.findViewById(R.id.enterMessageLayout)
