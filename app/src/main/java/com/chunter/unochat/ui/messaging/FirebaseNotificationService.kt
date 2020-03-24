@@ -8,10 +8,12 @@ import androidx.core.app.NotificationCompat
 import com.chunter.unochat.R
 import com.chunter.unochat.ui.host.HostActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import timber.log.Timber
 
 class FirebaseNotificationService : FirebaseMessagingService() {
 
@@ -20,6 +22,14 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         Firebase.firestore.document("users/${currentUser.uid}")
             .update("token", token)
+            .addOnFailureListener { exception ->
+                Timber.e(exception)
+                if (exception is FirebaseFirestoreException
+                    && exception.code == FirebaseFirestoreException.Code.NOT_FOUND
+                ) {
+                    onNewToken(token)
+                }
+            }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

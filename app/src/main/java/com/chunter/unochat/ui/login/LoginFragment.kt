@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.ktx.Firebase
@@ -149,9 +150,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     .await()
                     .token
 
-                Firebase.firestore.document("users/${user.uid}")
-                    .update("token", token)
-                    .await()
+                try {
+                    Firebase.firestore.document("users/${user.uid}")
+                        .update("token", token)
+                        .await()
+                } catch (exception: Exception) {
+                    Timber.e(exception)
+                    if (exception is FirebaseFirestoreException
+                        && exception.code == FirebaseFirestoreException.Code.NOT_FOUND
+                    ) {
+                        handleAuthResult(user)
+                    }
+                }
 
                 withContext(Dispatchers.Main) {
                     findNavController().navigate(R.id.navToHome)
